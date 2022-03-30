@@ -10,7 +10,6 @@ public class CellAndBoardTest {
 		System.out.println(board);
 
 		try {
-
 			board.addToken(0, 0, new FixedToken(p1));
 			System.out.println(board);
 			board.addToken(0, 0, new FixedToken(p2));
