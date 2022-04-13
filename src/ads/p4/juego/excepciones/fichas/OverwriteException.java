@@ -1,4 +1,4 @@
-package ads.p4.juego.excepciones;
+package ads.p4.juego.excepciones.fichas;
 
 import ads.p4.interfaces.IToken;
 
@@ -9,7 +9,7 @@ public class OverwriteException extends ForbiddenToken {
 
     @Override
     public String toString() {
-        return "Error. the token" + token + " can not be placed in position " + x + ", " + y
+        return "Error. the token " + token + " can not be placed in position " + x + ", " + y
                 + " because: the cell contains a token that cannot be overwritten";
     }
 }

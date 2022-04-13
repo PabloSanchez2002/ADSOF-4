@@ -1,6 +1,11 @@
 package ads.p4.tests;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import ads.p4.juego.Game;
+import ads.p4.juego.excepciones.game.InvalidGame;
 
 public class GameMain {
 

@@ -1,7 +1,8 @@
 package ads.p4.interfaces;
 
 import java.util.*;
-import ads.p4.juego.excepciones.ForbiddenToken;
+
+import ads.p4.juego.excepciones.fichas.ForbiddenToken;
 
 public interface IBoard {
     public ICell getCell(int row, int column);

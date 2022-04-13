@@ -2,7 +2,6 @@ package ads.p4.juego;
 
 import ads.p4.interfaces.ICell;
 import ads.p4.interfaces.IToken;
-import ads.p4.juego.fichas.Token;
 
 import java.lang.Math;
 
