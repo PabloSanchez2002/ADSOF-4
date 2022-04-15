@@ -6,6 +6,7 @@ public class Player {
     private static int count = 0;
     int id;
     Cell lastCell;
+    int points = 0;
 
     public Player() {
         count++;
@@ -22,6 +23,10 @@ public class Player {
 
     public int getId() {
         return id;
+    }
+
+    public int getPoints() {
+        return points;
     }
 
 }

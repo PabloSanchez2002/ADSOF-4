@@ -46,4 +46,8 @@ public class Cell implements ICell {
         }
         return token.toString();
     }
+
+    public String cordinatesToString() {
+        return (row + "," + column);
+    }
 }

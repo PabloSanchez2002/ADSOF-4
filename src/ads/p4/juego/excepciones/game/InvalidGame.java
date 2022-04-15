@@ -11,6 +11,9 @@ public class InvalidGame extends Exception {
 
     @Override
     public String toString() {
-        return "Error. the token " + token + " can not be placed in position " + x + "," + y + "\n";
+        return "Error. Invalid board. Number of rows and columns must be " + this.size
+                + ". Number of wall tokens must not exceed " + (this.size
+                        - (this.walls + 1))
+                + "\n";
     }
 }

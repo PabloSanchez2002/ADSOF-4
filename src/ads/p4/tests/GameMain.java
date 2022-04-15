@@ -25,6 +25,7 @@ public class GameMain {
 
 			Game j = new Game(turns, size, wallTokens);
 			j.play();
+
 		} catch (NumberFormatException nfe) {
 			System.out.println("Incorrect format");
 		} catch (InvalidGame e) {
