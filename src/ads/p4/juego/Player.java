@@ -29,4 +29,8 @@ public class Player {
         return points;
     }
 
+    public void addPoint() {
+        this.points++;
+    }
+
 }

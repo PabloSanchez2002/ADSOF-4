@@ -89,7 +89,7 @@ public class BoardGame implements IBoard {
             throw new OutOfBoardException(f, row, column);
         } else if ((this.celdas[row][column].getToken() != null)
                 && (this.celdas[row][column].getToken().getOverriteable() != true)) {
-            throw new OverwriteException(f, row, column); //// tiene que dejar
+            throw new OverwriteException(f, row, column);
         } else if (f.getPlayer() == null && this.celdas[row][column].getToken() == null) {
             this.celdas[row][column].setToken(f);
             return;
@@ -99,6 +99,7 @@ public class BoardGame implements IBoard {
                     || this.celdas[row][column].getToken() == null) {
                 this.celdas[row][column].setToken(f);
                 f.getPlayer().setLastCell(this.celdas[row][column]);
+                f.getPlayer().addPoint();
                 return;
             } else {
                 throw new OverwriteException(f, row, column);
@@ -109,6 +110,7 @@ public class BoardGame implements IBoard {
         } else {
             this.celdas[row][column].setToken(f);
             f.getPlayer().setLastCell(this.celdas[row][column]);
+            f.getPlayer().addPoint();
             return;
         }
     }
@@ -129,5 +131,15 @@ public class BoardGame implements IBoard {
 
     public ICell getSymmetric(ICell c) {
         return this.celdas[this.getRows() - c.getRow() - 1][this.getColumns() - c.getColumn() - 1];
+    }
+
+    public Boolean playerCanPlaceToken(Player p) {
+        List<ICell> cells = this.getNeighbors(p.getLastCell().getRow(), p.getLastCell().getColumn());
+        for (ICell c : cells) {
+            if (c.getToken() == null || c.getToken().toString().equals("EN")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

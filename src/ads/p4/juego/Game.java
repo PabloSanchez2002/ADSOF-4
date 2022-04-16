@@ -27,7 +27,8 @@ public class Game {
             throw new InvalidGame(this.size, this.wallTokens);
         } else {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            // Inicializamos el tablerl y jugadores
+            // Inicializamos el tablero y jugadores
+            int bloqueo = 0;
             Player p1 = new Player();
             Player p2 = new Player();
             bg = new BoardGame(size, p1, p2);
@@ -39,21 +40,35 @@ public class Game {
 
                 for (Player p : this.bg.players) {
                     System.out.println(this.calcularPuntos() + "Turn " + (i + 1));
-
-                    while (true) {
-                        try {
-                            System.out.println("Player " + p.getId() + " enter the coordinates of the new token: \n");
-                            String newToken = br.readLine();
-                            String[] token = newToken.split(",");
-                            this.bg.addToken(Integer.parseInt(token[1]), Integer.parseInt(token[0]),
-                                    new NormalToken(p));
-                            break;
-                        } catch (ForbiddenToken e) {
-                            System.out.println(e);
+                    // Sistema de deteccion de bloqueos
+                    if (bg.playerCanPlaceToken(p) == false) {
+                        System.out.println("PLayer " + p.getId() + " cant place any tokens, turn skipped\n");
+                        if (bloqueo == 1) {
+                            System.out.println("The two players are bloqued, game ends\n");
+                            return;
+                        } else {
+                            bloqueo = 1;
                         }
-                    }
-                    System.out.print(bg.toString());
+                    } else {
+                        while (true) {
+                            try {
+                                System.out
+                                        .println("Player " + p.getId() + " enter the coordinates of the new token: \n");
+                                String newToken = br.readLine();
+                                if (newToken.equals("END")) {
+                                    return;
+                                }
+                                String[] token = newToken.split(",");
+                                this.bg.addToken(Integer.parseInt(token[1]), Integer.parseInt(token[0]),
+                                        new NormalToken(p));
+                                break;
+                            } catch (ForbiddenToken e) {
+                                System.out.println(e);
+                            }
+                        }
+                        System.out.print(bg.toString());
 
+                    }
                 }
             }
         }
