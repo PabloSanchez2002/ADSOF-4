@@ -96,6 +96,7 @@ public class BoardGame implements IBoard {
         int row, column, count, maxTries = 10;
 
         for (count = 0; count < maxTries; count++) {
+
             row = rand.nextInt(upperbound);
             column = rand.nextInt(upperbound);
             ICell c = this.getSymmetric(this.getCell(row, column));
@@ -107,6 +108,17 @@ public class BoardGame implements IBoard {
                     this.addToken(c.getRow(), c.getColumn(), en);
                     break;
                 } catch (ForbiddenToken e) {
+                }
+            }
+        }
+    }
+
+    public void clearEnhancer() {
+        for (int i = 0; i < this.getRows(); i++) {
+            for (int j = 0; j < this.getRows(); j++) {
+                if (this.celdas[i][j].getToken() != null
+                        && this.celdas[i][j].getToken().getClass().equals(EnhancerToken.class)) {
+                    this.celdas[i][j].setToken(null);
                 }
             }
         }
@@ -199,8 +211,11 @@ public class BoardGame implements IBoard {
     public Boolean playerCanPlaceToken(Player p) {
         List<ICell> cells = this.getNeighbors(p.getLastCell().getRow(), p.getLastCell().getColumn());
         for (ICell c : cells) {
-            if ((c.getToken() == null || c.getToken().toString().equals("EN"))
-                    || (c.getToken() != null && c.getToken().getPlayer().equals(p))) {
+            if (c.getToken() == null) {
+                return true;
+            } else if ((c.getToken().toString().equals("EN"))) {
+                return true;
+            } else if (c.getToken().getPlayer().equals(p)) {
                 return true;
             }
         }
@@ -208,15 +223,16 @@ public class BoardGame implements IBoard {
     }
 
     public void checkEnhancer(ICell cell, IToken last) {
-        if (cell.getToken().getClass().equals(EnhancerToken.class)) {
+        if (last != null && last.getClass().equals(EnhancerToken.class)) {
             this.randomEffect(cell);
         }
     }
 
     public void randomEffect(ICell cell) {
         Random rand = new Random();
-        int upperbound = 2;
-        int effect = rand.nextInt(upperbound);
+        // int upperbound = 2;
+        // int effect = rand.nextInt(upperbound);
+        int effect = 2;
 
         if (effect == 0) {
             // 1) Añadir fichas normales del jugador en toda la columna.
@@ -244,5 +260,7 @@ public class BoardGame implements IBoard {
                 }
             }
         }
+        this.clearEnhancer();
+        this.randomEnhancer();
     }
 }

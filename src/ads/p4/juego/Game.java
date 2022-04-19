@@ -36,6 +36,7 @@ public class Game {
                 this.bg.clearWalls();
                 for (int j = 0; j < this.wallTokens; j++) {
                     this.bg.randomWall();
+                    this.bg.randomEnhancer(); //////////
                 }
 
                 System.out.print(bg.toString());
@@ -68,7 +69,7 @@ public class Game {
                                 System.out.println(e);
                             }
                         }
-                        System.out.print(bg.toString());
+                        System.out.print(bg.toString() + "\n");
 
                     }
                 }

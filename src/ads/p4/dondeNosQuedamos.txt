@@ -1,10 +1,15 @@
 1. Nos falta, comprobar la funcionalidad de la ficha enhancer
+vertival bien
+horizontal bien
+vecinos bien
 
-2. Fichero de texto del que se lee el inicio de la partida
+A veces quedan casillas sin rellenar (especialmente en la horizontal ¿¿causa??)
 
-3. Crear ficheros de prueba para comprobar el manejo de todas las excepciones
+2. Fichero de texto del que se lee el inicio de la partida ~ 
 
-4. Comentarios javadoc a todo el código
+3. Crear ficheros de prueba para comprobar el manejo de todas las excepciones ~
+
+4. Comentarios javadoc a todo el código ~
 
 5. Crear el diagrama de clases
 
