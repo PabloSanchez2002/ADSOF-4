@@ -6,19 +6,34 @@ import java.io.InputStreamReader;
 
 import ads.p4.juego.excepciones.fichas.ForbiddenToken;
 import ads.p4.juego.excepciones.game.InvalidGame;
-
+/**
+ * Clase game
+ * @author Pablo Sanchez y Alvaro Rodriguez
+ */
 public class Game {
     int turns;
     int size;
     int wallTokens;
     BoardGame bg;
 
+    /**
+     * Constructor de la clase
+     * @param turns turnos
+     * @param size tamaño
+     * @param wallTokens numero de murallas
+     */
     public Game(int turns, int size, int wallTokens) {
         this.turns = turns;
         this.size = size;
         this.wallTokens = wallTokens;
     }
 
+    /**
+     * Metodo con juegos
+     * @throws NumberFormatException Excepcion de numero
+     * @throws InvalidGame Excepcion de juego invalido
+     * @throws IOException Excepcion 
+     */
     public void play() throws NumberFormatException, InvalidGame, IOException {
         if (this.wallTokens >= this.size - (this.wallTokens + 1)) {
             throw new InvalidGame(this.size, this.wallTokens);
@@ -77,6 +92,10 @@ public class Game {
         }
     }
 
+    /**
+     * devuelve el numero de puntos
+     * @return String
+     */
     public String calcularPuntos() {
         String puntos = "\n";
         for (Player p : this.bg.players) {

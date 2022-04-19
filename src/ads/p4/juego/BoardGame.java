@@ -13,11 +13,20 @@ import ads.p4.juego.fichas.playerTokens.NormalToken;
 import ads.p4.juego.fichas.playerTokens.PlayerToken;
 
 import java.util.*;
-
+/**
+ * Clase boardGame 
+ * @author Alvaro Rodriguez y Pablo Sanchez
+ */
 public class BoardGame implements IBoard {
     ArrayList<Player> players;
     Cell[][] celdas;
 
+    /**
+     * Constructor de BoardGame
+     * @param casillas numero de casillas
+     * @param p1 jugador uno
+     * @param p2 jugador dos
+     */
     public BoardGame(int casillas, Player p1, Player p2) {
         players = new ArrayList<Player>();
         this.players.add(p1);
@@ -43,19 +52,35 @@ public class BoardGame implements IBoard {
         }
 
     }
-
+    /**
+     * Devuelve la celda en row,column
+     * @param row fila
+     * @param column columna
+     * @return ICell 
+     */
     public ICell getCell(int row, int column) {
         return this.celdas[row][column];
     }
 
+    /**
+     * Devuelve el numero de filas
+     * @return int
+     */
     public int getRows() {
         return this.celdas.length;
     }
 
+
+    /**
+     * Devuelve el numero de columnas
+     */
     public int getColumns() {
         return this.celdas[0].length;
     }
 
+    /**
+     * toString de la clase
+     */
     public String toString() {
         String ret = "";
         for (int i = 0; i < this.getRows(); i++) {
@@ -67,6 +92,9 @@ public class BoardGame implements IBoard {
         return ret;
     }
 
+    /**
+     * Pone una en una celda aleatoria un enhancer
+     */
     public void randomEnhancer() {
         Random rand = new Random(); // instance of random class
         int upperbound = this.getColumns();
@@ -90,6 +118,9 @@ public class BoardGame implements IBoard {
 
     }
 
+    /**
+     * Pone en una celda aleatoria una murall
+     */
     public void randomWall() {
         Random rand = new Random(); // instance of random class
         int upperbound = this.getColumns();
@@ -113,6 +144,9 @@ public class BoardGame implements IBoard {
         }
     }
 
+    /**
+     * Limpia las fichas enhancers
+     */
     public void clearEnhancer() {
         for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getRows(); j++) {
@@ -124,6 +158,9 @@ public class BoardGame implements IBoard {
         }
     }
 
+    /**
+     * Limpia las fichas murallas
+     */
     public void clearWalls() {
         for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getRows(); j++) {
@@ -135,6 +172,13 @@ public class BoardGame implements IBoard {
         }
     }
 
+    /**
+     * Añade un token en una celda
+     * @param row fila
+     * @param column columna
+     * @param f token
+     * @throws ForbiddenToken
+     */
     public void addToken(int row, int column, IToken f) throws ForbiddenToken {
         if (row > this.getRows() || row < 0 || column < 0 || column > this.getRows()) {
             throw new OutOfBoardException(f, row, column);
@@ -162,6 +206,12 @@ public class BoardGame implements IBoard {
         }
     }
 
+    /**
+     * Añade un token 
+     * @param row fila
+     * @param colum columna
+     * @param f token
+     */
     public void setToken(int row, int colum, PlayerToken f) {
         IToken last = this.celdas[row][colum].getToken();
         this.celdas[row][colum].setToken(f);
@@ -170,10 +220,22 @@ public class BoardGame implements IBoard {
         this.checkEnhancer(this.celdas[row][colum], last);
     }
 
+    /**
+     * Añade un token 
+     * @param row fila
+     * @param colum columna
+     * @param f token
+     */
     public void setToken(int row, int colum, IToken f) {
         this.celdas[row][colum].setToken(f);
     }
 
+    /**
+     * Devuelve los vecinos alrededor de una posicion
+     * @param row fila
+     * @param column columna
+     * @return los vecinos
+     */
     public List<ICell> getNeighbors(int row, int column) {
         List<ICell> neightbours = new ArrayList<ICell>();
         Cell c = this.celdas[row][column];
@@ -188,6 +250,12 @@ public class BoardGame implements IBoard {
         return neightbours;
     }
 
+
+    /** 
+     * gets the symetric of a cell
+     * @param c cell 
+     * @return ICell
+     */
     public ICell getSymmetric(ICell c) {
         return this.celdas[this.getRows() - c.getRow() - 1][this.getColumns() - c.getColumn() - 1];
     }
