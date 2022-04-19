@@ -2,7 +2,7 @@ package ads.p4.tests;
 
 import ads.p4.juego.*;
 import ads.p4.juego.excepciones.fichas.ForbiddenToken;
-import ads.p4.juego.fichas.FixedToken;
+import ads.p4.juego.fichas.playerTokens.FixedToken;
 import ads.p4.interfaces.*;
 
 public class CellAndBoardTest {

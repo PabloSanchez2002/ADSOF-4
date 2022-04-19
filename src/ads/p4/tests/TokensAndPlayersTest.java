@@ -5,6 +5,9 @@ import java.util.List;
 import ads.p4.interfaces.IToken;
 import ads.p4.juego.Player;
 import ads.p4.juego.fichas.*;
+import ads.p4.juego.fichas.playerTokens.FixedToken;
+import ads.p4.juego.fichas.playerTokens.MultiplierToken;
+import ads.p4.juego.fichas.playerTokens.NormalToken;
 
 public class TokensAndPlayersTest {
 

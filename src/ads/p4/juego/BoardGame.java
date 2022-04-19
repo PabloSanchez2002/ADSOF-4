@@ -6,7 +6,11 @@ import ads.p4.juego.excepciones.fichas.NotNeighbourException;
 import ads.p4.juego.excepciones.fichas.OutOfBoardException;
 import ads.p4.juego.excepciones.fichas.OverwriteException;
 import ads.p4.juego.fichas.EnhancerToken;
-import ads.p4.juego.fichas.NormalToken;
+import ads.p4.juego.fichas.WallToken;
+import ads.p4.juego.fichas.playerTokens.FixedToken;
+import ads.p4.juego.fichas.playerTokens.MultiplierToken;
+import ads.p4.juego.fichas.playerTokens.NormalToken;
+import ads.p4.juego.fichas.playerTokens.PlayerToken;
 
 import java.util.*;
 
@@ -30,8 +34,10 @@ public class BoardGame implements IBoard {
             NormalToken n2 = new NormalToken(players.get(1));
             this.addToken(0, 0, n1);
             n1.getPlayer().setLastCell(this.celdas[0][0]);
+            n1.addPoints();
             this.addToken(this.getRows() - 1, this.getColumns() - 1, n2);
             n2.getPlayer().setLastCell(this.celdas[this.getRows() - 1][this.getColumns() - 1]);
+            n2.addPoints();
             this.randomEnhancer();
         } catch (ForbiddenToken e) {
         }
@@ -84,6 +90,39 @@ public class BoardGame implements IBoard {
 
     }
 
+    public void randomWall() {
+        Random rand = new Random(); // instance of random class
+        int upperbound = this.getColumns();
+        int row, column, count, maxTries = 10;
+
+        for (count = 0; count < maxTries; count++) {
+            row = rand.nextInt(upperbound);
+            column = rand.nextInt(upperbound);
+            ICell c = this.getSymmetric(this.getCell(row, column));
+            // Intento de insercion de tokens sin colision
+            if (c.getToken() == null && this.getCell(row, column).getToken() == null) {
+                WallToken en = new WallToken();
+                try {
+                    this.addToken(row, column, en);
+                    this.addToken(c.getRow(), c.getColumn(), en);
+                    break;
+                } catch (ForbiddenToken e) {
+                }
+            }
+        }
+    }
+
+    public void clearWalls() {
+        for (int i = 0; i < this.getRows(); i++) {
+            for (int j = 0; j < this.getRows(); j++) {
+                if (this.celdas[i][j].getToken() != null
+                        && this.celdas[i][j].getToken().getClass().equals(WallToken.class)) {
+                    this.celdas[i][j].setToken(null);
+                }
+            }
+        }
+    }
+
     public void addToken(int row, int column, IToken f) throws ForbiddenToken {
         if (row > this.getRows() || row < 0 || column < 0 || column > this.getRows()) {
             throw new OutOfBoardException(f, row, column);
@@ -91,15 +130,13 @@ public class BoardGame implements IBoard {
                 && (this.celdas[row][column].getToken().getOverriteable() != true)) {
             throw new OverwriteException(f, row, column);
         } else if (f.getPlayer() == null && this.celdas[row][column].getToken() == null) {
-            this.celdas[row][column].setToken(f);
+            this.setToken(row, column, f);
             return;
         } else if (f.getPlayer().getLastCell() == null) {
             if ((this.celdas[row][column].getToken() != null)
                     && (this.celdas[row][column].getToken().getOverriteable() == true)
                     || this.celdas[row][column].getToken() == null) {
-                this.celdas[row][column].setToken(f);
-                f.getPlayer().setLastCell(this.celdas[row][column]);
-                f.getPlayer().addPoint();
+                this.setToken(row, column, f);
                 return;
             } else {
                 throw new OverwriteException(f, row, column);
@@ -108,11 +145,21 @@ public class BoardGame implements IBoard {
                 .getLastCell() != (this.celdas[row][column])) {
             throw new NotNeighbourException(f, row, column);
         } else {
-            this.celdas[row][column].setToken(f);
-            f.getPlayer().setLastCell(this.celdas[row][column]);
-            f.getPlayer().addPoint();
+            this.setToken(row, column, (PlayerToken) f);
             return;
         }
+    }
+
+    public void setToken(int row, int colum, PlayerToken f) {
+        IToken last = this.celdas[row][colum].getToken();
+        this.celdas[row][colum].setToken(f);
+        f.getPlayer().setLastCell(this.celdas[row][colum]);
+        f.addPoints();
+        this.checkEnhancer(this.celdas[row][colum], last);
+    }
+
+    public void setToken(int row, int colum, IToken f) {
+        this.celdas[row][colum].setToken(f);
     }
 
     public List<ICell> getNeighbors(int row, int column) {
@@ -133,13 +180,69 @@ public class BoardGame implements IBoard {
         return this.celdas[this.getRows() - c.getRow() - 1][this.getColumns() - c.getColumn() - 1];
     }
 
+    public IToken newPlayerToken(Player p) {
+        Random rand = new Random();
+        int upperbound = 100;
+        int prob = rand.nextInt(upperbound);
+        if (prob < 70) {
+            return new NormalToken(p);
+
+        } else if (prob >= 70 && prob < 90) {
+            return new FixedToken(p);
+
+        } else {
+            return new MultiplierToken(p);
+
+        }
+    }
+
     public Boolean playerCanPlaceToken(Player p) {
         List<ICell> cells = this.getNeighbors(p.getLastCell().getRow(), p.getLastCell().getColumn());
         for (ICell c : cells) {
-            if (c.getToken() == null || c.getToken().toString().equals("EN")) {
+            if ((c.getToken() == null || c.getToken().toString().equals("EN"))
+                    || (c.getToken() != null && c.getToken().getPlayer().equals(p))) {
                 return true;
             }
         }
         return false;
+    }
+
+    public void checkEnhancer(ICell cell, IToken last) {
+        if (cell.getToken().getClass().equals(EnhancerToken.class)) {
+            this.randomEffect(cell);
+        }
+    }
+
+    public void randomEffect(ICell cell) {
+        Random rand = new Random();
+        int upperbound = 2;
+        int effect = rand.nextInt(upperbound);
+
+        if (effect == 0) {
+            // 1) Añadir fichas normales del jugador en toda la columna.
+            for (int i = 0; i < this.getRows(); i++) {
+                try {
+                    this.addToken(i, cell.getColumn(), new NormalToken(cell.getToken().getPlayer()));
+                } catch (ForbiddenToken e) {
+                }
+            }
+        } else if (effect == 1) {
+            // 1) Añadir fichas normales del jugador en toda la fila.
+            for (int i = 0; i < this.getColumns(); i++) {
+                try {
+                    this.addToken(cell.getRow(), i, new NormalToken(cell.getToken().getPlayer()));
+                } catch (ForbiddenToken e) {
+                }
+            }
+        } else {
+            // 3) Añadir fichas normales en todas las celdas vecinas de la ficha
+            List<ICell> cells = this.getNeighbors(cell.getRow(), cell.getColumn());
+            for (ICell c : cells) {
+                try {
+                    this.addToken(c.getRow(), c.getColumn(), new NormalToken(cell.getToken().getPlayer()));
+                } catch (ForbiddenToken e) {
+                }
+            }
+        }
     }
 }

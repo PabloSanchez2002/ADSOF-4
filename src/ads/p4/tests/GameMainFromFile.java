@@ -1,5 +1,7 @@
 package ads.p4.tests;
 
+import ads.p4.juego.Game;
+
 public class GameMainFromFile {
 
 	public static void main(String args[]) {

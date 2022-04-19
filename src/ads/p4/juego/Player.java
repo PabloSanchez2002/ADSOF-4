@@ -1,7 +1,5 @@
 package ads.p4.juego;
 
-import ads.p4.interfaces.IToken;
-
 public class Player {
     private static int count = 0;
     int id;
@@ -29,8 +27,8 @@ public class Player {
         return points;
     }
 
-    public void addPoint() {
-        this.points++;
+    public void addPoints(int n) {
+        this.points += n;
     }
 
 }

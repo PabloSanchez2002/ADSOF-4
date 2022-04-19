@@ -1,7 +1,6 @@
 package ads.p4.juego.fichas;
 
 import ads.p4.interfaces.*;
-import ads.p4.juego.Player;
 
 public abstract class Token implements IToken {
     Boolean overritable;

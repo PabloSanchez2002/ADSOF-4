@@ -16,5 +16,4 @@ public class EnhancerToken extends Token {
     public Player getPlayer() {
         return null;
     }
-
 }

@@ -3,12 +3,9 @@ package ads.p4.juego;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
 
 import ads.p4.juego.excepciones.fichas.ForbiddenToken;
 import ads.p4.juego.excepciones.game.InvalidGame;
-import ads.p4.juego.fichas.NormalToken;
 
 public class Game {
     int turns;
@@ -36,13 +33,18 @@ public class Game {
             // Empiezan los turnos
             for (int i = 0; i < this.turns; i++) {
                 System.out.println("Starting turn " + (i + 1));
+                this.bg.clearWalls();
+                for (int j = 0; j < this.wallTokens; j++) {
+                    this.bg.randomWall();
+                }
+
                 System.out.print(bg.toString());
 
                 for (Player p : this.bg.players) {
                     System.out.println(this.calcularPuntos() + "Turn " + (i + 1));
                     // Sistema de deteccion de bloqueos
                     if (bg.playerCanPlaceToken(p) == false) {
-                        System.out.println("PLayer " + p.getId() + " cant place any tokens, turn skipped\n");
+                        System.out.println("Player " + p.getId() + " cant place any tokens, turn skipped\n");
                         if (bloqueo == 1) {
                             System.out.println("The two players are bloqued, game ends\n");
                             return;
@@ -59,8 +61,8 @@ public class Game {
                                     return;
                                 }
                                 String[] token = newToken.split(",");
-                                this.bg.addToken(Integer.parseInt(token[1]), Integer.parseInt(token[0]),
-                                        new NormalToken(p));
+                                this.bg.addToken(Integer.parseInt(token[0]), Integer.parseInt(token[1]),
+                                        this.bg.newPlayerToken(p));
                                 break;
                             } catch (ForbiddenToken e) {
                                 System.out.println(e);
