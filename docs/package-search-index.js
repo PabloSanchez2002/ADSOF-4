@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"ads.p4.interfaces"},{"l":"ads.p4.juego"},{"l":"ads.p4.juego.excepciones.fichas"},{"l":"ads.p4.juego.excepciones.game"},{"l":"ads.p4.juego.fichas"},{"l":"ads.p4.juego.fichas.playerTokens"},{"l":"ads.p4.tests"},{"l":"All Packages","url":"allpackages-index.html"}]

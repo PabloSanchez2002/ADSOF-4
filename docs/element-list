@@ -1,0 +1,7 @@
+ads.p4.interfaces
+ads.p4.juego
+ads.p4.juego.excepciones.fichas
+ads.p4.juego.excepciones.game
+ads.p4.juego.fichas
+ads.p4.juego.fichas.playerTokens
+ads.p4.tests

@@ -13,8 +13,10 @@ import ads.p4.juego.fichas.playerTokens.NormalToken;
 import ads.p4.juego.fichas.playerTokens.PlayerToken;
 
 import java.util.*;
+
 /**
- * Clase boardGame 
+ * Clase boardGame
+ * 
  * @author Alvaro Rodriguez y Pablo Sanchez
  */
 public class BoardGame implements IBoard {
@@ -23,9 +25,10 @@ public class BoardGame implements IBoard {
 
     /**
      * Constructor de BoardGame
+     * 
      * @param casillas numero de casillas
-     * @param p1 jugador uno
-     * @param p2 jugador dos
+     * @param p1       jugador uno
+     * @param p2       jugador dos
      */
     public BoardGame(int casillas, Player p1, Player p2) {
         players = new ArrayList<Player>();
@@ -52,11 +55,13 @@ public class BoardGame implements IBoard {
         }
 
     }
+
     /**
      * Devuelve la celda en row,column
-     * @param row fila
+     * 
+     * @param row    fila
      * @param column columna
-     * @return ICell 
+     * @return ICell
      */
     public ICell getCell(int row, int column) {
         return this.celdas[row][column];
@@ -64,12 +69,12 @@ public class BoardGame implements IBoard {
 
     /**
      * Devuelve el numero de filas
+     * 
      * @return int
      */
     public int getRows() {
         return this.celdas.length;
     }
-
 
     /**
      * Devuelve el numero de columnas
@@ -174,9 +179,10 @@ public class BoardGame implements IBoard {
 
     /**
      * Añade un token en una celda
-     * @param row fila
+     * 
+     * @param row    fila
      * @param column columna
-     * @param f token
+     * @param f      token
      * @throws ForbiddenToken
      */
     public void addToken(int row, int column, IToken f) throws ForbiddenToken {
@@ -207,10 +213,11 @@ public class BoardGame implements IBoard {
     }
 
     /**
-     * Añade un token 
-     * @param row fila
+     * Añade un token
+     * 
+     * @param row   fila
      * @param colum columna
-     * @param f token
+     * @param f     token
      */
     public void setToken(int row, int colum, PlayerToken f) {
         IToken last = this.celdas[row][colum].getToken();
@@ -221,10 +228,11 @@ public class BoardGame implements IBoard {
     }
 
     /**
-     * Añade un token 
-     * @param row fila
+     * Añade un token
+     * 
+     * @param row   fila
      * @param colum columna
-     * @param f token
+     * @param f     token
      */
     public void setToken(int row, int colum, IToken f) {
         this.celdas[row][colum].setToken(f);
@@ -232,7 +240,8 @@ public class BoardGame implements IBoard {
 
     /**
      * Devuelve los vecinos alrededor de una posicion
-     * @param row fila
+     * 
+     * @param row    fila
      * @param column columna
      * @return los vecinos
      */
@@ -250,10 +259,10 @@ public class BoardGame implements IBoard {
         return neightbours;
     }
 
-
-    /** 
+    /**
      * gets the symetric of a cell
-     * @param c cell 
+     * 
+     * @param c cell
      * @return ICell
      */
     public ICell getSymmetric(ICell c) {
@@ -283,7 +292,7 @@ public class BoardGame implements IBoard {
                 return true;
             } else if ((c.getToken().toString().equals("EN"))) {
                 return true;
-            } else if (c.getToken().getPlayer().equals(p)) {
+            } else if ((c.getToken().toString().equals("WA") != true) && c.getToken().getPlayer().equals(p)) {
                 return true;
             }
         }
@@ -298,9 +307,8 @@ public class BoardGame implements IBoard {
 
     public void randomEffect(ICell cell) {
         Random rand = new Random();
-        // int upperbound = 2;
-        // int effect = rand.nextInt(upperbound);
-        int effect = 2;
+        int upperbound = 2;
+        int effect = rand.nextInt(upperbound);
 
         if (effect == 0) {
             // 1) Añadir fichas normales del jugador en toda la columna.

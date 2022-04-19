@@ -2,8 +2,6 @@ package ads.p4.tests;
 
 import java.io.IOException;
 
-import org.junit.runner.RunWith;
-
 import ads.p4.juego.Game;
 import ads.p4.juego.GameLoader;
 import ads.p4.juego.excepciones.game.InvalidGame;
